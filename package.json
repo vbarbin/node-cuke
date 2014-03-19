@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "istanbul": "^0.2.6"
+  },
+  "scripts": {
+    "test": "istanbul test test/asyncCalculator-runner.js"
   }
 }
