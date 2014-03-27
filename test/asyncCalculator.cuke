@@ -3,13 +3,13 @@ Feature: Addition
   As a math idiot
   I want to be told the sum of two numbers
 
-  Scenario: Add to numbers
+  Scenario: Add two numbers
     Given I have entered 50 into the calculator
     And I have entered 70 into the calculator
     When I press add
     Then the result should be 120 on the screen
 
-  Scenario: Add to other numbers
+  Scenario: Add two other numbers
     Given I have entered 30 into the calculator
     And I have entered 70 into the calculator
     When I press add
@@ -20,7 +20,7 @@ Feature: Substraction
   As a math idiot
   I want to be told the substraction of two numbers
 
-  Scenario: Add to numbers
+  Scenario: Substract
     Given I have entered 70 into the calculator
     And I have entered 50 into the calculator
     When I press substract
