@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+var cuke = require('../lib');
+var path = require('path');
+var folder = process.argv[1];
+
+// TODO: Fetch files
+var featureFile = path.resolve(folder, 'test.feature');
+var stepDefinitionFile = path.resolve(folder, 'test.js');
