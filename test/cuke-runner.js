@@ -7,6 +7,11 @@ var ls = fs.readdirSync(__dirname).filter(function(item) {
     return /(.*?)\.feature/.exec(itemName)[1];
 });
 
-for (var i = 0; i < ls.length; i++) {
-    cuke(require('./' + ls[i] + '-steps'), fs.readFileSync(path.join(__dirname, ls[i] + '.feature')).toString());
-}
+(function callee() {
+    var feature = ls.shift();
+    if (feature) {
+        cuke(require('./' + feature + '-steps'), fs.readFileSync(path.join(__dirname, feature + '.feature')).toString(), function() {
+            process.nextTick(callee);
+        });
+    }
+})();
