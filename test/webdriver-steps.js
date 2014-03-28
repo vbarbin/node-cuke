@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 var webdriver = require('selenium-webdriver');
 var q = require('q');
@@ -7,7 +9,7 @@ var StepDefinition = module.exports = function() {
         .usingServer('http://192.168.56.1:4444/wd/hub')
         .withCapabilities(webdriver.Capabilities.chrome())
         .build();
-}
+};
 
 StepDefinition.prototype = {
     given: {
@@ -35,4 +37,4 @@ StepDefinition.prototype = {
     destroy: function() {
         this.driver.quit();
     }
-}
+};

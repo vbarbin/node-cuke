@@ -11,6 +11,6 @@
     "selenium-webdriver": "~2.40.0"
   },
   "scripts": {
-    "test": "istanbul test test/asyncCalculator-runner.js"
+    "test": "istanbul test test/cuke-runner.js"
   }
 }
