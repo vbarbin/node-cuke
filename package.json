@@ -11,6 +11,8 @@
     "selenium-webdriver": "~2.40.0"
   },
   "scripts": {
-    "test": "istanbul test test/cuke-runner.js"
-  }
+    "test": "istanbul test bin/node-cuke test/"
+  },
+  "main": "lib/index.js",
+  "bin": "bin/node-cuke"
 }
