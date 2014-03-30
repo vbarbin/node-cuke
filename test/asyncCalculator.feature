@@ -14,14 +14,3 @@ Feature: Addition
     And I have entered 70 into the calculator
     When I press add
     Then the result should be 100 on the screen
-
-Feature: Substraction
-  In order to avoid silly mistakes
-  As a math idiot
-  I want to be told the substraction of two numbers
-
-  Scenario: Substract
-    Given I have entered 70 into the calculator
-    And I have entered 50 into the calculator
-    When I press substract
-    Then the result should be 20 on the screen
