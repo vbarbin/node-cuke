@@ -1,8 +1,77 @@
 #!/usr/bin/env node
+
 var cuke = require('../lib');
 var path = require('path');
-var folder = process.argv[1];
+var q = require('q');
+var fs = require('fs');
 
-// TODO: Fetch files
-var featureFile = path.resolve(folder, 'test.feature');
-var stepDefinitionFile = path.resolve(folder, 'test.js');
+require('colors');
+
+// Asynchronously gets recursivly the list of feature files
+q.fcall(function getFeatureFiles(directory) {
+    return q.nfcall(fs.readdir, directory.fileName).then(function(files) {
+        var results = q.all(files.map(fileType.bind(null, directory.fileName)));
+        var subfolders = will('filter', results, by('isDirectory', true));
+        var featureFiles = will('filter', results, by('fileName', /\.feature$/));
+
+        return q.spread([featureFiles, will('map', subfolders, getFeatureFiles)], function(featureFiles, promises) {
+            return q.spread(promises, Array.prototype.concat.bind(featureFiles));
+        });
+    });
+}, {
+    fileName: path.resolve(process.argv[2])
+}).then(function runner(featureFiles) {
+    var next = runner.bind(null, featureFiles);
+    var featureFile = featureFiles.shift();
+
+    if (featureFile) {    
+        var stepDefinition = require(featureFile.fileName.replace(/\.feature$/, '.js'));
+
+        return q.nfcall(fs.readFile, featureFile.fileName, 'utf8').then(function(content) {
+            cuke(stepDefinition, content, next);
+        });
+    }
+}).fail(function(err) {
+    console.error(err.stack || err);
+});
+
+/**
+ *  Filters by a field value
+ *  @returns {Function}
+ */
+function by(field, value) {
+    return function(obj) {
+        if (value instanceof RegExp) {
+            return value.test(obj[field]);
+        }
+
+        return value === obj[field];
+    }
+};
+
+/**
+ *  Gets file stats and returns an object with isDirectory and fileName
+ *  @returns {Promise of Object}
+ */
+function fileType(directory, name) {
+    var fileName = path.resolve(directory, name);
+
+    return q.nfcall(fs.stat, fileName).then(function(stats) {
+        return {
+            isDirectory: stats.isDirectory(),
+            fileName: fileName
+        };
+    });
+}
+
+/**
+ *  Execute an array function when the promise will resolve
+ *  @param {Promise of Array} p
+ *  @param {Function} fn
+ *  @returns {Promise of Array}
+ */
+function will(name, p, fn) {
+    return p.then(function(arr) {
+        return arr[name](fn);
+    });
+}
