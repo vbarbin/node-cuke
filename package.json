@@ -14,5 +14,9 @@
     "test": "istanbul test bin/node-cuke test/"
   },
   "main": "lib/index.js",
-  "bin": "bin/node-cuke"
+  "bin": "bin/node-cuke",
+  "repository": {
+    "type" : "git",
+    "url" : "http://github.com/node-cuke/node-cuke.git"
+  }
 }
