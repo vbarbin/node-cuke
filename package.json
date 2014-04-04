@@ -4,19 +4,21 @@
   "dependencies": {
     "pegjs": "^0.8.0",
     "q": "^1.0.1",
-    "colors": "^0.6.2"
+    "colors": "^0.6.2",
+    "winston": "^0.7.3"
   },
   "devDependencies": {
     "istanbul": "^0.2.6",
-    "selenium-webdriver": "~2.40.0"
+    "selenium-webdriver": "~2.40.0",
+    "jasmine-node": "^1.14.3"
   },
   "scripts": {
-    "test": "istanbul test bin/node-cuke test/"
+    "test": "istanbul test ./node_modules/jasmine-node/bin/jasmine-node spec/"
   },
   "main": "lib/index.js",
   "bin": "bin/node-cuke",
   "repository": {
-    "type" : "git",
-    "url" : "http://github.com/node-cuke/node-cuke.git"
+    "type": "git",
+    "url": "http://github.com/node-cuke/node-cuke.git"
   }
 }
