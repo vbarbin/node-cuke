@@ -1,7 +1,11 @@
 'use strict';
 
+var noOp = function() {};
+
 var core = require('../lib/core');
 var q = require('q');
+var logger = require('../lib/logger');
+logger.log = logger.success = logger.error = logger.newline = noOp;
 
 describe('Cuke core', function() {
 
@@ -24,7 +28,6 @@ describe('Cuke core', function() {
 
     var Step;
     var stepSpy;
-    var noOp = function() {};
 
     beforeEach(function() {
         stepSpy = jasmine.createSpy('some step process');
