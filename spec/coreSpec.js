@@ -5,7 +5,6 @@ var noOp = function() {};
 var core = require('../lib/core');
 var q = require('q');
 var logger = require('../lib/logger');
-logger.log = logger.success = logger.error = logger.newline = noOp;
 
 describe('Cuke core', function() {
 
@@ -30,6 +29,7 @@ describe('Cuke core', function() {
     var stepSpy;
 
     beforeEach(function() {
+        spyOn(console, 'log').andCallFake(noOp);
         stepSpy = jasmine.createSpy('some step process');
         Step = function() {};
         Step.prototype = {
@@ -99,6 +99,18 @@ describe('Cuke core', function() {
             });
         });
 
+        it('should handle errors when executing step', function(done) {
+            var scenario = core.createScenario(scenarioSource);
+            spyOn(logger, 'error').andCallThrough();
+            Step.prototype.when['I do something'] = function() {
+                throw new Error('Some error');
+            };
+            scenario.exec(Step, function() {
+                expect(logger.error).toHaveBeenCalled();
+                done();
+            });
+        });
+
         describe('with promises', function() {
 
             it('should execute step', function(done) {
@@ -119,18 +131,21 @@ describe('Cuke core', function() {
 
             it('should handle errors when executing step', function(done) {
                 var scenario = core.createScenario(scenarioSource);
+                spyOn(logger, 'error').andCallThrough();
                 Step.prototype.when['I do something'] = function() {
                     var deferred = q.defer();
                     process.nextTick(function() {
-                        deferred.reject({message: 'Error', stack: 'Error'});
+                        deferred.reject({
+                            message: 'Error',
+                            stack: 'Error'
+                        });
                     });
 
-                    return deferred.promise.catch(function(err) {
-                        expect(err.message).toEqual('Error');
-                        done();
-                    });
+                    return deferred.promise;
                 };
                 scenario.exec(Step, function() {
+                    expect(logger.error).toHaveBeenCalled();
+                    done();
                 });
             });
 
