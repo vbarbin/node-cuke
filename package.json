@@ -5,7 +5,8 @@
     "pegjs": "^0.8.0",
     "q": "^1.0.1",
     "colors": "^0.6.2",
-    "winston": "^0.7.3"
+    "winston": "^0.7.3",
+    "linq": "^3.0.4-beta"
   },
   "devDependencies": {
     "istanbul": "^0.2.6",
